@@ -4,4 +4,9 @@
     <string name="button_message">I\'m a button</string>
     <string name="editmessage">I\'m a EditText</string>
     <string name="hinttext">Write something here</string>
+    <string name="switchy">Do you Drink Coffee? Swich</string>
+    <string name="checkbox">Do you Drink Coffee? Check</string>
+    <string name="radiobutton">Do you Drink Coffee? Radio</string>
+    <string name="imageText">Little T</string>
+    <string name="image">algonquin college logo</string>
 </resources>

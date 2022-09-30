@@ -5,4 +5,5 @@
     <string name="buttonOne">Button</string>
     <string name="buttonTwo">Button</string>
     <string name="buttonThree">Button</string>
+    <string name="spin_switch">Spin Flag</string>
 </resources>

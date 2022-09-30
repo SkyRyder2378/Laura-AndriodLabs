@@ -2,4 +2,7 @@
     <string name="app_name">Laura\'s AndriodLabs</string>
     <string name="hello_message">Hello world!</string>
     <string name="button_message">I\'m a button</string>
+    <string name="buttonOne">Button</string>
+    <string name="buttonTwo">Button</string>
+    <string name="buttonThree">Button</string>
 </resources>

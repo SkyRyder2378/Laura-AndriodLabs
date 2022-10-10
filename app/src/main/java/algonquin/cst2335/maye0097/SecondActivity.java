@@ -22,6 +22,25 @@ import android.widget.TextView;
 public class SecondActivity extends AppCompatActivity {
 
     private static final String TAG = "SecondActivity";
+    public Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    public ActivityResultLauncher <Intent> cameraResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Log.w(TAG, "before if in onActivityResult");
+                    ImageView profileImage = findViewById(R.id.imageView);
+                    if (result.getResultCode() == Activity.RESULT_OK){
+                        Log.w(TAG, "In onActivityResult in ActivityResultLauncher");
+                        Intent data = result.getData();
+                        Log.w(TAG, "after second Intent creation");
+                        Bitmap thumbnail = data.getParcelableExtra("data");
+                        Log.w(TAG, "after create Bitmap");
+                        profileImage.setImageBitmap(thumbnail);
+                        Log.w(TAG, "after setImageBitmap");
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,32 +65,27 @@ public class SecondActivity extends AppCompatActivity {
         });
 
         Button picture = findViewById(R.id.button3);
-        ImageView profileImage = findViewById(R.id.imageView);
 
         picture.setOnClickListener(click->{
             Log.w(TAG, "In setOnClickListener for Capture Picture Button");
-            Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            Log.w(TAG, "Create first Intent");
 
-            ActivityResultLauncher <Intent> cameraResult = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            Log.w(TAG, "before if in onActivityResult");
-                            if (result.getResultCode() == Activity.RESULT_OK){
-                                Log.w(TAG, "In onActivityResult in ActivityResultLauncher");
-                                Intent data = result.getData();
-                                Log.w(TAG, "after second Intent creation");
-                                Bitmap thumbnail = data.getParcelableExtra("data");
-                                Log.w(TAG, "after create Bitmap");
-                                profileImage.setImageBitmap(thumbnail);
-                                Log.w(TAG, "after setImageBitmap");
-                            }
-                        }
-                    });
-
-            Log.w(TAG, "after ActivityResultLauncher");
+//            ActivityResultLauncher <Intent> cameraResult = registerForActivityResult(
+//                    new ActivityResultContracts.StartActivityForResult(),
+//                    new ActivityResultCallback<ActivityResult>() {
+//                        @Override
+//                        public void onActivityResult(ActivityResult result) {
+//                            Log.w(TAG, "before if in onActivityResult");
+//                            if (result.getResultCode() == Activity.RESULT_OK){
+//                                Log.w(TAG, "In onActivityResult in ActivityResultLauncher");
+//                                Intent data = result.getData();
+//                                Log.w(TAG, "after second Intent creation");
+//                                Bitmap thumbnail = data.getParcelableExtra("data");
+//                                Log.w(TAG, "after create Bitmap");
+//                                profileImage.setImageBitmap(thumbnail);
+//                                Log.w(TAG, "after setImageBitmap");
+//                            }
+//                        }
+//                    });
             cameraResult.launch(cameraIntent);
         });
 

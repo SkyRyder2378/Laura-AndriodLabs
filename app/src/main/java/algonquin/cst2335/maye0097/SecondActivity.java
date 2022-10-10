@@ -8,8 +8,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,26 +21,35 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 
 public class SecondActivity extends AppCompatActivity {
 
     private static final String TAG = "SecondActivity";
+    public String filename = "Picture.png";
     public Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     public ActivityResultLauncher <Intent> cameraResult = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    Log.w(TAG, "before if in onActivityResult");
-                    ImageView profileImage = findViewById(R.id.imageView);
                     if (result.getResultCode() == Activity.RESULT_OK){
-                        Log.w(TAG, "In onActivityResult in ActivityResultLauncher");
                         Intent data = result.getData();
-                        Log.w(TAG, "after second Intent creation");
                         Bitmap thumbnail = data.getParcelableExtra("data");
-                        Log.w(TAG, "after create Bitmap");
-                        profileImage.setImageBitmap(thumbnail);
-                        Log.w(TAG, "after setImageBitmap");
+                        FileOutputStream fOut = null;
+                        try {
+                            fOut = openFileOutput(filename, Context.MODE_PRIVATE);
+                            thumbnail.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+                            fOut.flush();
+                            fOut.close();
+                        }
+                        catch (FileNotFoundException e) { Log.w(TAG, "catch FileNotFoundException"); e.printStackTrace(); }
+                        catch (IOException e) { Log.w(TAG, "catch IOException");e.printStackTrace(); }
+
                     }
                 }
             });
@@ -53,44 +65,43 @@ public class SecondActivity extends AppCompatActivity {
         String name = fromPrevious.getStringExtra("Name");
         String pCode = fromPrevious.getStringExtra("PostalCode");
 
+        TextView phone = findViewById(R.id.editTextPhone);
+
+        SharedPreferences data = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        String phoneIn = data.getString("Phone Number", phone.getText().toString());
+        phone.setText(phoneIn);
+
         TextView topText = findViewById(R.id.textView3);
         topText.setText("Welcome Back " + email);
         Button callB = findViewById(R.id.button2);
         callB.setOnClickListener(clk->{
             Intent call = new Intent(Intent.ACTION_DIAL);
-            TextView phone = findViewById(R.id.editTextPhone);
             String phoneNumber = phone.getText().toString();
             call.setData(Uri.parse("tel:" + phoneNumber));
             startActivity(call);
         });
 
         Button picture = findViewById(R.id.button3);
+        ImageView profileImage = findViewById(R.id.imageView);
 
         picture.setOnClickListener(click->{
-            Log.w(TAG, "In setOnClickListener for Capture Picture Button");
-
-//            ActivityResultLauncher <Intent> cameraResult = registerForActivityResult(
-//                    new ActivityResultContracts.StartActivityForResult(),
-//                    new ActivityResultCallback<ActivityResult>() {
-//                        @Override
-//                        public void onActivityResult(ActivityResult result) {
-//                            Log.w(TAG, "before if in onActivityResult");
-//                            if (result.getResultCode() == Activity.RESULT_OK){
-//                                Log.w(TAG, "In onActivityResult in ActivityResultLauncher");
-//                                Intent data = result.getData();
-//                                Log.w(TAG, "after second Intent creation");
-//                                Bitmap thumbnail = data.getParcelableExtra("data");
-//                                Log.w(TAG, "after create Bitmap");
-//                                profileImage.setImageBitmap(thumbnail);
-//                                Log.w(TAG, "after setImageBitmap");
-//                            }
-//                        }
-//                    });
             cameraResult.launch(cameraIntent);
         });
 
+        File file = new File(getFilesDir(), filename);
+        if(file.exists()){
+            Bitmap theImage = BitmapFactory.decodeFile(file.getPath());
+            profileImage.setImageBitmap(theImage);
+        }
 
+    }
 
-
+    protected void onPause(){
+        TextView phone = findViewById(R.id.editTextPhone);
+        SharedPreferences data = getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = data.edit();
+        editor.putString("Phone Number", phone.getText().toString());
+        editor.apply();
+        super.onPause();
     }
 }

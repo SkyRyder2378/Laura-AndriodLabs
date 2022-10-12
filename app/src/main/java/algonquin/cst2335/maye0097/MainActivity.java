@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             int age = 24;
             String name = "Laura Mayer";
             String postCode = "K2G 3L6";
-            nextPage.putExtra("EmailAddress", email);
+            nextPage.putExtra("EmailName", emailI);
             nextPage.putExtra("Age", age);
             nextPage.putExtra("Name", name);
             nextPage.putExtra("PostalCode", postCode);

@@ -59,7 +59,7 @@ public class SecondActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         Intent fromPrevious = getIntent();
-        String email = fromPrevious.getStringExtra("EmailAddress");
+        String email = fromPrevious.getStringExtra("EmailName");
         int numb = 2;
         int age = fromPrevious.getIntExtra("Age", numb);
         String name = fromPrevious.getStringExtra("Name");

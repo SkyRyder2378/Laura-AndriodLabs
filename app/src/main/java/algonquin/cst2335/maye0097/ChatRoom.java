@@ -3,6 +3,8 @@ package algonquin.cst2335.maye0097;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -82,6 +84,15 @@ public class ChatRoom extends AppCompatActivity {
             binding.sendMessage.setText("");
         });
 
+        chatModel.selectMessage.observe(this, (newMessageValue) -> {
+            MessageDetailFragment chatFragment = new MessageDetailFragment (newMessageValue);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.frameLayout, chatFragment);
+            transaction.commit();
+            transaction.addToBackStack("");
+        });
+
         binding.recycleView.setAdapter(myAdapter = new RecyclerView.Adapter<MyRowHolder>() {
             @NonNull
             @Override
@@ -134,22 +145,9 @@ public class ChatRoom extends AppCompatActivity {
 
             itemView.setOnClickListener(clk -> {
                 int position = getAbsoluteAdapterPosition();
-                AlertDialog.Builder builder = new AlertDialog.Builder(ChatRoom.this);
-                builder.setMessage("Do you want to delete the message: " + messageText.getText());
-                builder.setTitle("Question: ");
-                builder.setPositiveButton("Yes", (dialog, cl) -> {
-                    ChatMessage removedMessage = messages.get(position);
-                    messages.remove(position);
-                    myAdapter.notifyItemRemoved(position);
-                    Snackbar.make(messageText, "You deleted message #" + position, Snackbar.LENGTH_LONG)
-                            .setAction("Undo", click -> {
-                                messages.add(position, removedMessage);
-                                myAdapter.notifyItemInserted(position);
-                            })
-                            .show();
-                });
-                builder.setNegativeButton("No", (dialog, cl) -> {  });
-                builder.create().show();
+                ChatMessage selected = messages.get(position);
+
+                chatModel.selectMessage.postValue(selected);
             });
 
             messageText = itemView.findViewById(R.id.message);

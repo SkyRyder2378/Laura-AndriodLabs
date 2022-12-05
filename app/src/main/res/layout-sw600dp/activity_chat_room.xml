@@ -11,50 +11,55 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
+
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/conatraintLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleView"
-                android:layout_width="0dp"
+                android:layout_width="300dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/sendMessage"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-            </androidx.recyclerview.widget.RecyclerView>
+                app:layout_constraintTop_toTopOf="parent"></androidx.recyclerview.widget.RecyclerView>
 
             <EditText
                 android:id="@+id/sendMessage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:ems="10"
                 android:inputType="textPersonName"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/receiveButton"
-                app:layout_constraintStart_toEndOf="@+id/sendButton"
-                app:layout_constraintTop_toBottomOf="@id/recycleView" />
+                app:layout_constraintStart_toEndOf="@+id/sendButton" />
 
             <Button
                 android:id="@+id/sendButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
                 android:text="Send"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recycleView" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/receiveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:text="Receive"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/recycleView" />
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#9C27B0"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycleView" />
+                app:layout_constraintStart_toEndOf="@id/recycleView"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>

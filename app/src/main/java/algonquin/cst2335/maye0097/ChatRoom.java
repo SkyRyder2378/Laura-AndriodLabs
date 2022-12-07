@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -46,13 +47,15 @@ public class ChatRoom extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").build();
-        mDAO = db.cmDAO();
-
         binding = ActivityChatRoomBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
+        binding.toolbar.showOverflowMenu();
+
+        MessageDatabase db = Room.databaseBuilder(getApplicationContext(), MessageDatabase.class, "database-name").fallbackToDestructiveMigration().build();
+
+        mDAO = db.cmDAO();
 
         binding.recycleView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -74,10 +77,15 @@ public class ChatRoom extends AppCompatActivity {
             String time = sdf.format(new Date());
             int is = 0;
 
-            ChatMessage tempMessage = new ChatMessage(message, time, is);
-            messages.add(tempMessage);
+            ChatMessage tempSMessage = new ChatMessage(message, time, is);
+            messages.add(tempSMessage);
             myAdapter.notifyItemInserted(messages.size()-1);
             binding.sendMessage.setText("");
+
+            Executor threadS = Executors.newSingleThreadExecutor();
+            threadS.execute(()-> {
+                mDAO.insertMessage(tempSMessage);
+            });
         });
 
         binding.receiveButton.setOnClickListener(click -> {
@@ -86,10 +94,15 @@ public class ChatRoom extends AppCompatActivity {
             String time = sdf.format(new Date());
             int is = 1;
 
-            ChatMessage tempMessage = new ChatMessage(message, time, is);
-            messages.add(tempMessage);
+            ChatMessage tempRMessage = new ChatMessage(message, time, is);
+            messages.add(tempRMessage);
             myAdapter.notifyItemInserted(messages.size()-1);
             binding.sendMessage.setText("");
+
+            Executor threadR = Executors.newSingleThreadExecutor();
+            threadR.execute(()-> {
+                mDAO.insertMessage(tempRMessage);
+            });
         });
 
         chatModel.selectMessage.observe(this, (newMessageValue) -> {

@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
         variableBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(variableBinding.getRoot());
-        variableBinding.myText.setText(model.editString.toString());
 
         model.editString.observe(this, s -> {
             String text = "Your edit text has " + s;

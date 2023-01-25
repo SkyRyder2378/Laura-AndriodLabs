@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="algonquin.cst2335.maye0097">
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -22,5 +23,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 
 public class MainActivity extends AppCompatActivity {
-
     ImageView imgView;
     Switch sw;
 
@@ -18,7 +17,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         imgView = findViewById(R.id.flagView);
         sw = findViewById(R.id.spin_switch);
 
@@ -28,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
                 rotate.setDuration(5000);
                 rotate.setRepeatCount(Animation.INFINITE);
                 rotate.setInterpolator(new LinearInterpolator());
-
                 imgView.startAnimation(rotate);
             }
             else{

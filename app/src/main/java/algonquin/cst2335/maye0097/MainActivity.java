@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     /** This holds the text at the centre of the screen */
     private TextView textView = null;
-    /** This hold the text input in the middle of the scren just below the TextView */
+    /** This hold the text input in the middle of the screen just below the TextView */
     private EditText passwordET = null;
     /** This hold the login button at the bottom of the screen */
     private Button loginBtn = null;

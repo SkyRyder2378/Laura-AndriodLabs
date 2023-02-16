@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
             nextPage.putExtra("PostalCode", postCode);
             startActivity(nextPage);
         });
-
     }
 
     @Override

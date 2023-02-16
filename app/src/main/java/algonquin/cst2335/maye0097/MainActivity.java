@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     /** This function is used to check the complexity of a password before allowing it,

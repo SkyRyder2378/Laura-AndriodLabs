@@ -41,6 +41,8 @@ public class SecondActivity extends AppCompatActivity {
                         Intent data = result.getData();
                         Bitmap thumbnail = data.getParcelableExtra("data");
                         FileOutputStream fOut = null;
+                        ImageView image = findViewById(R.id.imageView);
+                        image.setImageBitmap(thumbnail);
                         try {
                             fOut = openFileOutput(filename, Context.MODE_PRIVATE);
                             thumbnail.compress(Bitmap.CompressFormat.PNG, 100, fOut);

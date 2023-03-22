@@ -149,10 +149,8 @@ public class ChatRoom extends AppCompatActivity {
 
                 chatModel.selectMessage.postValue(selected);
             });
-
             messageText = itemView.findViewById(R.id.message);
             timeText = itemView.findViewById(R.id.time);
-
         }
     }
 

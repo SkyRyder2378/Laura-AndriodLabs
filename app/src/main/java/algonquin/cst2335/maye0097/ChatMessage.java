@@ -9,13 +9,10 @@ public class ChatMessage {
 
     @PrimaryKey
     public int id;
-
     @ColumnInfo(name="message")
     protected String message;
-
     @ColumnInfo(name="TimeSent")
     protected String timeSent;
-
     @ColumnInfo(name="SendOrReceive")
     protected int sendOrReceive;
 

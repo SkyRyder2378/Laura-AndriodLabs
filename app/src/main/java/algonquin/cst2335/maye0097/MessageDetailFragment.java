@@ -14,7 +14,6 @@ public class MessageDetailFragment extends Fragment {
     ChatMessage selected;
 
     public MessageDetailFragment(){
-
     }
 
     public MessageDetailFragment(ChatMessage message){
